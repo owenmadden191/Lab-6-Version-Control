@@ -1,33 +1,48 @@
-# Author: Owen Madden
-# Partner: Alejandro Simon
+# Author: Owen Madden (main + encoder)
+# Partner: Alejandro Simon (decoder + fixes)
 # Lab 6, Group 102
 
-def encoder(password):
-    new_password = []
-    encoded_password = ''
-    for i in range(len(password)):
-        new_password.append(int(password[i]))
-    for i in range(len(new_password)):
-        new_password[i] = new_password[i] + 3
-        if new_password[i] > 9:
-            new_password[i] = new_password[i] % 9 -1
-    str(new_password)
-    for i in range(len(new_password)):
-        encoded_password += str(new_password[i])
-    return encoded_password
+# Encoder function
+def encode(password):
+    encoded = ""
+    for digit in password:
+        encoded += str((int(digit) + 3) % 10)
+    return encoded
 
-if __name__ == '__main__':
+# Main function
+def main():
+    encoded_password = ""
     while True:
-        print('Menu')
-        print('-------------')
-        print('1. Encode')
-        print('2. Decode')
-        print('3. Quit')
-        user_input = int(input(f'Please enter an option: '))
-        if user_input == 1:
-            password = input('Please enter your password to encode: ')
-        if user_input == 2:
-            print(f'The encoded password is {encoder(password)}, and the original password is {password}: ')
-        if user_input == 3:
-            exit()
+        print("\nMenu\n-------------")
+        print("1. Encode")
+        print("2. Decode")
+        print("3. Quit")
+        option = input("\nPlease enter an option: ")
 
+        if option == "1":
+            password = input("Please enter your password to encode: ")
+            if len(password) == 8 and password.isdigit():
+                encoded_password = encode(password)
+                print("Your password has been encoded and stored!")
+            else:
+                print("Invalid password. Please enter an 8-digit password containing only numbers.")
+        elif option == "2":
+            if encoded_password:
+                original_password = decode(encoded_password)
+                print(f"The encoded password is {encoded_password}, and the original password is {original_password}.")
+            else:
+                print("No encoded password found. Please encode a password first.")
+        elif option == "3":
+            break
+        else:
+            print("Invalid option. Please try again.")
+
+# Decoder function
+def decode(encoded_password):
+    decoded = ""
+    for digit in encoded_password:
+        decoded += str((int(digit) - 3) % 10)
+    return decoded
+
+if __name__ == "__main__":
+    main()
